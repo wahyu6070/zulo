@@ -1,0 +1,16 @@
+{% set Name = get_section(path="changelog/_index.md", required=false) %}
+{% if Name %}
+    {% for page in Name.pages | sort_by(attribute="date", reverse=true) | slice(end=1) %}
+        <div class="container">
+            <div class="card">
+                <p class="card-header"><strong>Changelog</strong></p>
+                <div class="card-body">
+                    <p class="card-title"><strong>Version v{{ page.version }}</strong></p>
+                    {{ page.content | safe }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Changelog section not found.</p>
+{% endif %}

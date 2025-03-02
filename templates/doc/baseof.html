@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" data-bs-theme="auto">
+
+<head>
+    {% include "meta/html.html" %}
+    <title>{{ title | default(value=config.title) }}</title>
+    {#-  Google Analytics -#}
+    {% include "google/analytics.html" %}
+    {#-  OpenGraph Meta Tags -#}
+    {% include "meta/opengraph.html" %}
+    {#-  SEO Meta Tags -#}
+    {% include "meta/seo.html" %}
+    {#-  CSS Framework (e.g., Bootstrap) -#}
+    {% include "framework.html" %}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ get_url(path="favicon.ico") }}" />
+    {#-  Google Search Console Verification -#}
+    {% include "google/searchconsole.html" %}
+    {#-  Custom Styles -#}
+    {% include "style.html" %}
+    {#-  Adsense or other ad code in head -#}
+    {% include "ads/head.html" %}
+
+</head>
+<body>
+    {#-  Navigation Bar -#}
+    {% include "navbar.html" %}
+
+    <main class="container">
+        <article>
+            {#-  Main document content.  This block will be overridden by child templates. -#}
+            {% block doc %}{% endblock doc %}
+        </article>
+    </main>
+
+    {#-  JavaScript files -#}
+    {% include "js.html" %}
+    {#-  Footer -#}
+    {% include "footer.html" %}
+</body>
+</html>

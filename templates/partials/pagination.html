@@ -1,0 +1,89 @@
+<nav class="MIDD" role="navigation" aria-label="pagination">
+    {% if paginator and paginator.total_pages > 1 %}
+        <ul class="pagination">
+
+            {# First Page #}
+            <li class="page-item {% if paginator.page_number == 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ paginator.first_page_url }}"
+                   {% if paginator.page_number == 1 %}tabindex="-1" aria-disabled="true" title="Go to the first page"{% endif %}>
+                    <span class="fas fa-step-backward"></span>
+                    <span class="sr-only">First</span>
+                </a>
+            </li>
+
+            {# Previous Page #}
+            <li class="page-item {% if not paginator.previous_page_url %}disabled{% endif %}">
+                <a class="page-link" href="{{ paginator.previous_page_url | default(value='#') }}"
+                   {% if not paginator.previous_page_url %}tabindex="-1" aria-disabled="true" title="No previous pages available"{% endif %}>
+                    <span class="fas fa-backward"></span>
+                    <span class="sr-only">Prev</span>
+                </a>
+            </li>
+
+            {# Page Numbers #}
+            {% set adjacent_links = 2 %}
+            {% set max_links = (adjacent_links * 2) + 1 %}
+            {% set lower_limit = 1 + adjacent_links %}
+            {% set upper_limit = paginator.total_pages - adjacent_links %}
+            {% set total_pages = paginator.total_pages %}
+
+            {# Calculate start and end pages for display #}
+            {% set start_page = paginator.page_number - adjacent_links %}
+            {% set end_page = paginator.page_number + adjacent_links %}
+
+            {% if start_page < 1 %}
+                {% set start_page = 1 %}
+                {% set end_page = max_links %}
+            {% elif end_page > total_pages %}
+                {% set start_page = total_pages - max_links + 1 %}
+                {% set end_page = total_pages %}
+            {% endif %}
+
+            {# Display page numbers #}
+            {% for i in range(start=start_page, end=end_page + 1) %}
+                <li class="page-item {% if i == paginator.page_number %}active{% endif %}">
+                    <a class="page-link" href="{{ paginator.base_url | default(value=current_url ~ '/') }}{{ i }}/"
+                       {% if i == paginator.page_number %}aria-current="page"{% endif %}
+                       aria-label="Go to page {{ i }}">
+                        {{ i }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {# Ellipsis (More Pages) #}
+            {% if paginator.total_pages > max_links and (paginator.page_number + adjacent_links) < (paginator.total_pages - 1) %}
+                <li class="page-item">
+                    <span class="pagination-ellipsis">…</span>
+                </li>
+            {% endif %}
+
+            {# Last Page (if not already shown) #}
+            {% if paginator.total_pages > max_links and (paginator.page_number + adjacent_links) < paginator.total_pages %}
+                <li class="page-item">
+                    <a href="{{ paginator.base_url | default(value=current_url ~ '/') }}{{ paginator.total_pages }}/"
+                       class="page-link" aria-label="Go to the last page">
+                        {{ paginator.total_pages }}
+                    </a>
+                </li>
+            {% endif %}
+
+            {# Next Page #}
+            <li class="page-item {% if not paginator.next_page_url %}disabled{% endif %}">
+                <a class="page-link" href="{{ paginator.next_page_url | default(value='#') }}"
+                   {% if not paginator.next_page_url %}tabindex="-1" aria-disabled="true" title="No next pages available"{% endif %}>
+                    <span class="fas fa-forward"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+
+            {# Last Page #}
+            <li class="page-item {% if paginator.page_number == paginator.total_pages %}disabled{% endif %}">
+                <a class="page-link" href="{{ paginator.base_url | default(value=current_url ~ '/') }}{{ paginator.total_pages }}/"
+                   {% if paginator.page_number == paginator.total_pages %}tabindex="-1" aria-disabled="true" title="This is the last page"{% endif %}>
+                    <span class="fas fa-step-forward"></span>
+                    <span class="sr-only">Last</span>
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+</nav>

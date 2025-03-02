@@ -1,0 +1,30 @@
+<!-- General Metadata -->
+<meta name="color-scheme" content="light dark">
+<meta charset="UTF-8"> <!-- Ditambahkan untuk kelengkapan -->
+
+<!-- Description Logic -->
+{% set meta_description = description | default(value=page.summary | default(value=config.description)) %}
+<meta name="description" content="{{ meta_description }}">
+<meta property="og:description" content="{% if page.extra.excerpt %}{{ page.extra.excerpt | replace(from='\n', to=',') }}{% else %}{{ meta_description }}{% endif %}">
+
+<!-- Author -->
+<meta name="author" content="{{ config.extra.author | default(value=page.author | default(value='Unknown')) }}">
+
+<!-- Language -->
+<meta property="og:locale" content="{{ lang | default(value=config.default_language | default(value='en')) }}">
+
+<!-- Title -->
+{% set meta_title = title | default(value=page.title | default(value=config.title)) %}
+<meta property="og:title" content="{{ meta_title }}">
+<title>{{ meta_title }}</title> <!-- Ditambahkan untuk tag <title> -->
+
+<!-- URL and Site Info -->
+{%- if current_url %}
+  {%- if page.extra.open_graph.url %}
+  <meta property="og:url" content="{{ page.extra.open_graph.url | escape_xml | safe }}" />
+  {%- else %}
+  <meta property="og:url" content="{{ current_url | escape_xml | safe }}" />
+  {%- endif %}
+  <link rel="canonical" href="{{ current_url | escape_xml | safe }}" />
+
+{%- endif %}

@@ -1,0 +1,35 @@
+{#-  Ini adalah komentar Zola.  Template ini mengasumsikan beberapa variabel global: -#}
+{#-  `config`:  Objek konfigurasi Zola. -#}
+{#-  `page`:   Objek halaman (page) saat ini, jika ada (misalnya, bukan di halaman utama). -#}
+{#-  `lang`:   Bahasa saat ini (string). -#}
+
+<!DOCTYPE html>
+<html lang="{{ lang }}" data-bs-theme="auto">
+
+<head>
+    {% include "meta/html.html" %}
+    <title>{{ page.title | default(value=config.title) }}</title>
+    {#-  Komentar HTML, akan tetap ada di output HTML. -#}
+    {% include "google/analytics.html" %}
+    {% include "meta/opengraph.html" %}
+    {% include "meta/seo.html" %}
+    {% include "framework.html" %}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ get_url(path="favicon.ico") }}" />
+    {% include "google/searchconsole.html" %}
+    {% include "style.html" %}
+    {% include "ads/head.html" %}
+</head>
+
+<body>
+    {% include "navbar.html" %}
+
+    <main class="container">
+        <article>
+            {% block changelog %}{% endblock %}
+        </article>
+    </main>
+
+    {% include "js.html" %}
+    {% include "footer.html" %}
+</body>
+</html>

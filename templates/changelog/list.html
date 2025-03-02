@@ -1,0 +1,19 @@
+{% block changelog %}
+    <h1>Changelog</h1>
+    {% set section = get_section(path="changelog/_index.md", required=true) %}
+    {% if section.pages %}
+        {% set_global paginator = section.pages | paginate(per_page=5) %} {# Or any number you want per page #}
+
+         {% include "pagination.html" %}
+
+        {% for page_item in paginator.pages %}
+            {% include "partials/list-item.html" %}
+        {% endfor %}
+
+        {% include "pagination.html" %}
+
+    {% else %}
+        <p>No changelog entries found.</p>
+    {% endif %}
+
+{% endblock changelog %}
